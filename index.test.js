@@ -11,21 +11,10 @@ const res = {
 describe("test for index", () => {
 
     it("should calculate ok", ()=> {
-        const sum = td.func("sum");
-        td.when(sum(10, 5)).thenResolve(15);
-
-        const substract = td.func("substract");
-        td.when(substract(10, 5)).thenResolve(5);
-
-        const log = td.func("log");
-        // td.when(log(td.matchers.anything())).then
-        const mockMath = {
-            sum,
-            substract,
-            log
-        };
-
-        td.replace("./math", mockMath);
+        
+        const math = td.replace("./math");
+        td.when(math.sum(10, 5)).thenResolve(15);
+        td.when(math.substract(10, 5)).thenResolve(5);
 
         var index = require("./index");
 
@@ -33,10 +22,8 @@ describe("test for index", () => {
 
         index(req, res);
 
-        console.log(td.explain(sum));
-        console.log(td.explain(substract));
-        console.log(td.explain(log));
-
-        
+        console.log(td.explain(sum)); // call count 1
+        console.log(td.explain(substract)); // call count 0 - Why?! 
     });
+    
 });
